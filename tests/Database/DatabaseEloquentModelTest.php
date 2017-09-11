@@ -151,6 +151,24 @@ class DatabaseEloquentModelTest extends TestCase
         $this->assertEquals(['first_name' => 'taylor', 'last_name' => 'otwell'], $model->only(['first_name', 'last_name']));
     }
 
+	public function testIs()
+	{
+		$model = new EloquentModelStub(['id' => 1]);
+		$model2 = new EloquentModelStub(['id' => 2]);
+
+		$this->assertTrue($model->is($model));
+		$this->assertFalse($model->is($model2));
+		$this->assertFalse($model->is(null));
+	}
+
+	public function testIsThrowsTypeError()
+	{
+		$model = new EloquentModelStub();
+		
+		$this->expectException(\TypeError::class);
+		$model->is(new stdClass());
+	}
+
     public function testNewInstanceReturnsNewInstanceWithAttributesSet()
     {
         $model = new EloquentModelStub;
